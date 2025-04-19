@@ -1,4 +1,6 @@
+import 'package:cinemapedia/config/constants/environments.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -12,8 +14,8 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Home Screen'),
       ),
-      body: const Center(
-        child: Text('Home Screen'),
+      body: Center(
+        child: Text( Environments.theMovieDbKey ),
       ),
     );
   }
