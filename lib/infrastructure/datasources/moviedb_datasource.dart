@@ -1,4 +1,5 @@
 import 'package:cinemapedia/infrastructure/mappers/movie_mapper.dart';
+import 'package:cinemapedia/infrastructure/models/moviedb/moviedb_response.dart';
 import 'package:dio/dio.dart';
 
 import 'package:cinemapedia/config/constants/environments.dart';
@@ -24,15 +25,12 @@ class MovieDbDatasource extends MoviesDatasource {
     
     final response = await dio.get('/movie/now_playing');
 
-    // if (response.statusCode != 200) {
-    //   throw Exception('Error al obtener las peliculas en cartelera');
-    // }
-    final List<dynamic> movieDBResponse = response.data['results'];
+     final movieDBResponse = MovieDbResponse.fromJson(response.data);
 
-    final List<Movie> movies = movieDBResponse
-    .where((moviedb) => moviedb['poster_path'] != 'no-poster')
+    final List<Movie> movies = movieDBResponse.results
+    .where((moviedb) => moviedb.posterPath != 'no-poster' )
     .map(
-      (moviedb) => MovieMapper.movieDBTToEntity(moviedb),
+      (moviedb) => MovieMapper.movieDBToEntity(moviedb)
     ).toList();
 
     return movies;

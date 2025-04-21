@@ -5,7 +5,7 @@ import 'package:cinemapedia/infrastructure/models/moviedb/movie_moviedb.dart';
 
 class MovieMapper {
 
-  static Movie movieDBTToEntity(MovieFromMovieDB moviedb) => Movie(
+  static Movie movieDBToEntity(MovieFromMovieDB moviedb) => Movie(
     adult: moviedb.adult,
     backdropPath: moviedb.backdropPath != '' 
     ? 'https://image.tmdb.org/t/p/w500${moviedb.backdropPath}' 
