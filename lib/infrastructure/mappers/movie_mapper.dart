@@ -1,7 +1,7 @@
 
 
 import 'package:cinemapedia/domain/entities/movie.dart';
-import 'package:cinemapedia/infrastructure/datasources/models/moviedb/movie_moviedb.dart';
+import 'package:cinemapedia/infrastructure/models/moviedb/movie_moviedb.dart';
 
 class MovieMapper {
 
