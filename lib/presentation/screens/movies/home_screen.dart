@@ -41,20 +41,73 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   Widget build(BuildContext context) {
 
     // final nowPlayingMovies = ref.watch( nowPlayingMoviesProvider );
-    final nowPlayingMovies = ref.watch( moviesSlideshowProvider );
-    return Column(
-      children: [
+    final nowPlayingMovies = ref.watch( nowPlayingMoviesProvider  );
+    final slideShowMovies = ref.watch( moviesSlideshowProvider );
 
-        CustomAppbar(),
+    return CustomScrollView(
+      slivers: [
 
-        MoviesSlideshow(movies: nowPlayingMovies),
+        const SliverAppBar(
+          floating: true,
+          flexibleSpace: FlexibleSpaceBar(
+            titlePadding: EdgeInsets.all(0),
+            title: CustomAppbar(),
+          ),
+        ),
 
-        MovieHorizontalListview(
-          movies: nowPlayingMovies,
-          title: 'En cines',
-          subtitle: 'Lunes 20',  
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+
+              return Column(
+                children: [
+                  // CustomAppbar(),
+                  MoviesSlideshow(movies: slideShowMovies),
+              
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'En cines',
+                    subtitle: 'Lunes 20',  
+                    loadNextPage: () {
+                      ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
+                    },
+                  ),
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'Proximamente',
+                    subtitle: 'En este mes',  
+                    loadNextPage: () {
+                      ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
+                    },
+                  ),
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'Populares',
+                    // subtitle: 'En este mes',  
+                    loadNextPage: () {
+                      ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
+                    },
+                  ),
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'Mejor calificadas',
+                    subtitle: 'Desde siempres',  
+                    loadNextPage: () {
+                      ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
+                    },
+                  ),
+
+                  const SizedBox( height: 10 ),
+                ],
+              );
+            } ,
+            childCount: 1
+          ) 
         )
-      ],
+
+      ]
+      
+      
     );
   }
 }

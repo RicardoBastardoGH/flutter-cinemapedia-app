@@ -13,5 +13,6 @@ final moviesSlideshowProvider = Provider<List<Movie>>((ref) {
   if ( nowPlayingMovies.isEmpty ) return [];//Si no hay peliculas en la lista, se retorna una lista vacia
 
   return nowPlayingMovies.sublist(0, 6);
+  // return nowPlayingMovies.toList();
 
 });

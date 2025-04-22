@@ -1,11 +1,11 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemapedia/config/config/human_formats.dart';
+import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entities/movie.dart';
 
 
-class MovieHorizontalListview extends StatelessWidget {
+class MovieHorizontalListview extends StatefulWidget {
 
   final List<Movie> movies;
   final String? title;
@@ -15,20 +15,50 @@ class MovieHorizontalListview extends StatelessWidget {
   const MovieHorizontalListview({super.key, required this.movies, this.title, this.subtitle, this.loadNextPage});
 
   @override
+  State<MovieHorizontalListview> createState() => _MovieHorizontalListviewState();
+}
+
+class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
+
+
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+
+      if ( widget.loadNextPage == null ) return;
+
+      if ( scrollController.position.pixels + 200 >= scrollController.position.maxScrollExtent) {
+        widget.loadNextPage!();
+      }
+
+    });
+  }
+
+  @override
+  dispose() {
+    scrollController.dispose();
+    super.dispose(); 
+  }
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 350,
       child: Column(
         children: [
-          if (title != null || subtitle != null)
-            _Title(title: title, subtitle: subtitle,),
+          if (widget.title != null || widget.subtitle != null)
+            _Title(title: widget.title, subtitle: widget.subtitle,),
 
           Expanded(
             child: ListView.builder(
+              controller: scrollController,
               scrollDirection: Axis.horizontal,
-              itemCount: movies.length,
+              itemCount: widget.movies.length,
               physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) => _Slide( movie: movies[index] ),
+              itemBuilder: (context, index) => _Slide( movie: widget.movies[index] ),
             ),
           ),
         ],
