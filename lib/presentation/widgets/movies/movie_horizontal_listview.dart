@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../domain/entities/movie.dart';
 
@@ -81,6 +82,7 @@ class _Slide extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           // Imagen
           SizedBox(
             width: 150,
@@ -99,10 +101,12 @@ class _Slide extends StatelessWidget {
                     );
                   }
 
-                  return FadeInRight(
-                    duration: const Duration(milliseconds: 150),
-                    child: child 
+                  return GestureDetector(
+                    onTap: () => context.push("/movie/${movie.id}"),
+                    child: FadeIn( child: child ),
                   );
+                  
+                  
                 },
               ),
             ),
