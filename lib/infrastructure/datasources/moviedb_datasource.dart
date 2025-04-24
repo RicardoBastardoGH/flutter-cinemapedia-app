@@ -8,7 +8,7 @@ import 'package:cinemapedia/domain/datasources/movies_datasource.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 
 class MovieDbDatasource extends MoviesDatasource {
-    final dio = Dio(BaseOptions(
+  final dio = Dio(BaseOptions(
     baseUrl: 'https://api.themoviedb.org/3',
     headers: {
       // 'Content-Type': 'application/json;charset=utf-8',
