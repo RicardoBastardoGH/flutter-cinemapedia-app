@@ -1,10 +1,18 @@
+import 'package:cinemapedia/domain/entities/movie.dart';
+import 'package:cinemapedia/presentation/delegates/search_movies_delegate.dart';
+import 'package:cinemapedia/presentation/providers/movies/movies_repository_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class CustomAppbar extends StatelessWidget {
+import '../../providers/providers.dart';
+
+class CustomAppbar extends ConsumerWidget {
   const CustomAppbar({super.key});
 
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
     final colors = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
@@ -21,7 +29,27 @@ class CustomAppbar extends StatelessWidget {
               const Spacer(),
               IconButton(
                 icon: Icon( Icons.search, color: colors.primary, ),
-                onPressed: (){}, 
+                onPressed: () async {
+                  final movieRepository = ref.read( movieRepositoryProvider );
+                  // final movie = await showSearch<Movie?>(
+                  final searchQuery = ref.read( searchQueryProvider );
+                   showSearch<Movie?>(
+                    query: searchQuery,
+                    context: context, 
+                    delegate: SearchMoviesDelegate( 
+                      searchMovies: ( query ) {
+                        ref.read( searchQueryProvider.notifier ).update((state) => query );
+                        return movieRepository.searchMovies( query );
+                      },
+                    ),
+                  ).then((movie) {
+                    if ( movie == null ) return;
+                    if (context.mounted) {
+                      context.push('/movie/${ movie.id }');
+                    }
+                  });
+
+                }, 
               )
               // const Spacer(),
               // Text('Cinemapedia', style: Theme.of(context).textTheme.titleLarge, ),
