@@ -3,7 +3,7 @@ import 'package:cinemapedia/presentation/views/views.dart';
 import 'package:go_router/go_router.dart';
 
 final appRuter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/home',
   routes: [
 
 // Comentario para guardar la version del curso
@@ -16,7 +16,7 @@ final appRuter = GoRouter(
         StatefulShellBranch(
           routes: [
         GoRoute(
-          path: '/',
+          path: '/home',
           builder: (context, state) {
             return const HomeView();
           },
@@ -43,6 +43,15 @@ final appRuter = GoRouter(
               }
             ),
           ]
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/',
+              redirect: (context, state) => '/home',
+            )
+          ] 
+          
         )
       ],
       
